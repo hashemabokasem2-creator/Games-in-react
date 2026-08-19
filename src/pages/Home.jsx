@@ -1,5 +1,6 @@
 import React from "react";
 import Hero from "../components/Hero.jsx";
+import Footer from "../components/Footer.jsx";
 
 function Home({ theme, accentColor, handleNextBg, handlePrevBg, }) {
   return (
@@ -10,6 +11,7 @@ function Home({ theme, accentColor, handleNextBg, handlePrevBg, }) {
         handleNextBg={handleNextBg}
         handlePrevBg={handlePrevBg}
       />
+      <Footer theme={theme} />
     </>
   );
 }

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home.jsx";
 import Mynavbar from "./components/Mynavbar.jsx";
+import Blay from "./pages/play.jsx";
+import Leaderboard from "./pages/leaderboard.jsx";
 
 const bgImages = [
   "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80",
@@ -64,6 +66,8 @@ function App() {
             />
           }
         />
+        <Route path="/play" element={<Blay />} />
+        <Route path="/leaderboard" element={<Leaderboard />} />
       </Routes>
     </>
   );
