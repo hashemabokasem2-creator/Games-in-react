@@ -1,0 +1,69 @@
+.customNavbar {
+  border-radius: 12px;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}
+
+.avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.1rem;
+}
+
+.title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.subtitle {
+  font-size: 0.75rem;
+  margin: 0;
+  line-height: 1.2;
+  opacity: 0.8;
+}
+
+.navBtn {
+  border-radius: 8px;
+  padding: 4px 12px !important;
+  font-size: 0.85rem;
+}
+
+.darkNavBtn {
+  transition: all 0.3s ease;
+}
+
+.darkNavBtn:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.lightNavBtn {
+  transition: all 0.3s ease;
+}
+
+.lightNavBtn:hover {
+  background-color: rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.switchBtn {
+  border-radius: 8px;
+  padding: 6px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.colorPicker {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
