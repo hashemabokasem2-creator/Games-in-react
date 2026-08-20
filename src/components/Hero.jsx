@@ -10,14 +10,44 @@ import { Container, Row, Form, Col, Card, Button } from "react-bootstrap";
 import "./Hero.css";
 
 function Hero({ theme, accentColor, handleNextBg, handlePrevBg }) {
-  const [goal, setGoal] = useState(10);
+  const [savedData, setSavedData] = useState({
+    name: "Guest",
+    difficulty: "easy",
+    goal: 10,
+  });
+
+  const [formData, setFormData] = useState({
+    name: "Guest",
+    difficulty: "easy",
+    goal: 10,
+  });
+
+  const handleSave = () => {
+    setSavedData({
+      name: formData.name.trim() !== "" ? formData.name : "Guest",
+      difficulty: formData.difficulty,
+      goal: formData.goal,
+    });
+
+    setFormData({
+      name: "Guest",
+      difficulty: "easy",
+      goal: 10,
+    });
+  };
 
   const handleIncrement = () => {
-    setGoal((prev) => prev + 1);
+    setFormData((prev) => ({
+      ...prev,
+      goal: prev.goal + 1,
+    }));
   };
 
   const handleDecrement = () => {
-    setGoal((prev) => (prev > 0 ? prev - 1 : 0));
+    setFormData((prev) => ({
+      ...prev,
+      goal: prev.goal > 0 ? prev.goal - 1 : 0,
+    }));
   };
 
   return (
@@ -51,10 +81,11 @@ function Hero({ theme, accentColor, handleNextBg, handlePrevBg }) {
                   className="fw-bold mb-2 d-flex align-items-center gap-2"
                   style={{ color: theme === "light" ? "#0b132a" : "#ffffff" }}
                 >
-                  Hello, Guest! 👋
+                  Hello, {savedData.name}! 👋
                 </h3>
                 <p className="small text-secondary mb-1">
-                  Difficulty: normal · Focus Goal: 10 mins
+                  Difficulty: {savedData.difficulty} · Focus Goal:{" "}
+                  {savedData.goal} mins
                 </p>
                 <p className="fst-italic small text-secondary mb-3">
                   Stay sharp. Keep practicing. — Unknown
@@ -123,8 +154,11 @@ function Hero({ theme, accentColor, handleNextBg, handlePrevBg }) {
                         </Form.Label>
                         <Form.Control
                           type="text"
-                          defaultValue="Guest"
+                          value={formData.name}
                           className="customInput"
+                          onChange={(e) =>
+                            setFormData({ ...formData, name: e.target.value })
+                          }
                           style={{
                             backgroundColor:
                               theme === "light" ? "#ffffff" : "#080d1d",
@@ -146,8 +180,14 @@ function Hero({ theme, accentColor, handleNextBg, handlePrevBg }) {
                         </Form.Label>
                         <div className="position-relative">
                           <Form.Select
-                            defaultValue="normal"
+                            value={formData.difficulty}
                             className="customInput customSelect"
+                            onChange={(e) =>
+                              setFormData({
+                                ...formData,
+                                difficulty: e.target.value,
+                              })
+                            }
                             style={{
                               backgroundColor:
                                 theme === "light" ? "#ffffff" : "#080d1d",
@@ -181,9 +221,12 @@ function Hero({ theme, accentColor, handleNextBg, handlePrevBg }) {
                         <div className="position-relative">
                           <Form.Control
                             type="number"
-                            value={goal}
+                            value={formData.goal}
                             onChange={(e) =>
-                              setGoal(Math.max(0, Number(e.target.value)))
+                              setFormData({
+                                ...formData,
+                                goal: Number(e.target.value),
+                              })
                             }
                             className="customInput"
                             style={{
@@ -220,6 +263,7 @@ function Hero({ theme, accentColor, handleNextBg, handlePrevBg }) {
                   <Button
                     type="button"
                     className="saveBtn mt-3"
+                    onClick={handleSave}
                     style={{
                       backgroundColor: accentColor,
                       borderColor: accentColor,
