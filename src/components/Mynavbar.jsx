@@ -71,6 +71,10 @@ function Mynavbar({ theme, setTheme, accentColor, setAccentColor }) {
             <Nav.Link
               as={Link}
               to="/leaderboard"
+              onClick={(e) => {
+                e.preventDefault();
+                window.dispatchEvent(new Event("triggerManualSave"));
+              }}
               className={`navBtn ${theme === "light" ? "lightNavBtn" : "darkNavBtn"}`}
               style={{
                 color: theme === "light" ? "#0b132a" : "#ffffff",

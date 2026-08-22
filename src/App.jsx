@@ -64,6 +64,30 @@ function App() {
     navigate("/play", { state: savedData });
   };
 
+  const [recentSessions, setRecentSessions] = useState(() => {
+    const saved = localStorage.getItem("game_sessions");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const saveSessionResult = (score, timeLeft) => {
+    const rawData = localStorage.getItem("gameData");
+    const localData = rawData ? JSON.parse(rawData) : {};
+
+    const newSession = {
+      id: Date.now(),
+      date: new Date().toLocaleString("en-GB"),
+      playerName: localData?.name || "Guest",
+      timeLeft: timeLeft || "00:00",
+      score: score || 0,
+    };
+
+    const existingSessions =
+      JSON.parse(localStorage.getItem("game_sessions")) || [];
+    const updatedSessions = [newSession, ...existingSessions].slice(0, 3);
+
+    localStorage.setItem("game_sessions", JSON.stringify(updatedSessions));
+    setRecentSessions(updatedSessions);
+  };
   return (
     <>
       <Mynavbar
@@ -94,10 +118,20 @@ function App() {
               theme={theme}
               accentColor={accentColor}
               savedData={savedData}
+              onSaveSession={saveSessionResult}
             />
           }
         />
-        <Route path="/leaderboard" element={<Leaderboard />} />
+        <Route
+          path="/leaderboard"
+          element={
+            <Leaderboard
+              recentSessions={recentSessions}
+              accentColor={accentColor}
+              theme={theme}
+            />
+          }
+        />
       </Routes>
     </>
   );

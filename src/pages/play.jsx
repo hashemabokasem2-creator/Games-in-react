@@ -20,7 +20,7 @@ const COLOR_MATCH_DATA = [
   { id: "green", name: "Green", color: "#198754" },
 ];
 
-function Blay({ theme, accentColor, savedData }) {
+function Blay({ theme, accentColor, savedData, onSaveSession }) {
   const navigate = useNavigate();
   const [score, setScore] = useState(0);
 
@@ -42,6 +42,7 @@ function Blay({ theme, accentColor, savedData }) {
 
   useEffect(() => {
     if (timeLeft <= 0) {
+      onSaveSession(score, "00:00");
       navigate("/leaderboard", {
         state: {
           playerData: savedData,
@@ -168,15 +169,6 @@ function Blay({ theme, accentColor, savedData }) {
     generateNewMatchRound();
   }, []);
 
-  const handleOptionClick = (selectedOptionId) => {
-    if (selectedOptionId === targetWord.id) {
-      setMatchScore((prev) => prev + 1);
-    } else {
-      setMatchMistakes((prev) => prev + 1);
-    }
-    generateNewMatchRound();
-  };
-
   const [isWon, setIsWon] = useState(false);
 
   const handleColorMatchClick = (selectedOptionId) => {
@@ -204,6 +196,19 @@ function Blay({ theme, accentColor, savedData }) {
     setIsWon(false);
     generateNewMatchRound();
   };
+
+  const handleEndGameManual = () => {
+    onSaveSession(matchScore, formatTime(timeLeft));
+    navigate("/leaderboard");
+  };
+
+  useEffect(() => {
+    const handleSaveSignal = () => handleEndGameManual();
+
+    window.addEventListener("triggerManualSave", handleSaveSignal);
+    return () =>
+      window.removeEventListener("triggerManualSave", handleSaveSignal);
+  }, [matchScore, timeLeft]);
   return (
     <>
       <section className="py-3">
