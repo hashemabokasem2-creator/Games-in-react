@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   BsArrowLeft,
   BsArrowRight,
@@ -6,34 +6,51 @@ import {
   BsCaretUpFill,
   BsCaretDownFill,
 } from "react-icons/bs";
-import { Container, Row, Form, Col, Card, Button } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Form,
+  Col,
+  Card,
+  Button,
+  Toast,
+  ToastContainer,
+} from "react-bootstrap";
 import "./Hero.css";
 
-function Hero({ theme, accentColor, handleNextBg, handlePrevBg }) {
-  const [savedData, setSavedData] = useState({
-    name: "Guest",
-    difficulty: "easy",
-    goal: 10,
-  });
-
+function Hero({
+  theme,
+  accentColor,
+  handleNextBg,
+  handlePrevBg,
+  savedData,
+  onSaveData,
+}) {
   const [formData, setFormData] = useState({
-    name: "Guest",
-    difficulty: "easy",
-    goal: 10,
+    name: savedData.name,
+    difficulty: savedData.difficulty,
+    goal: savedData.goal,
   });
 
   const handleSave = () => {
-    setSavedData({
-      name: formData.name.trim() !== "" ? formData.name : "Guest",
+    const newName = formData.name.trim() !== "" ? formData.name : "Guest";
+    const isDataChanged =
+      newName !== savedData.name ||
+      formData.difficulty !== savedData.difficulty ||
+      Number(formData.goal) !== Number(savedData.goal);
+    if (!isDataChanged) return;
+    const updatedData = {
+      name: newName,
       difficulty: formData.difficulty,
       goal: formData.goal,
-    });
+    };
 
-    setFormData({
-      name: "Guest",
-      difficulty: "easy",
-      goal: 10,
-    });
+    onSaveData(updatedData);
+
+    setShowToast(false);
+    setTimeout(() => {
+      setShowToast(true);
+    }, 50);
   };
 
   const handleIncrement = () => {
@@ -49,6 +66,8 @@ function Hero({ theme, accentColor, handleNextBg, handlePrevBg }) {
       goal: prev.goal > 0 ? prev.goal - 1 : 0,
     }));
   };
+
+  const [showToast, setShowToast] = useState(false);
 
   return (
     <>
@@ -277,6 +296,23 @@ function Hero({ theme, accentColor, handleNextBg, handlePrevBg }) {
           </Col>
         </Row>
       </Container>
+      <ToastContainer position="bottom-end" className="p-3 style-toast">
+        <Toast
+          show={showToast}
+          onClose={() => setShowToast(false)}
+          delay={3000}
+          autohide
+          style={{
+            backgroundColor: theme === "light" ? "#ffffff" : "#121212",
+            color: theme === "light" ? "#0b132a" : "#ffffff",
+            border: `2px solid ${accentColor}`,
+          }}
+        >
+          <Toast.Body className="d-flex align-items-center justify-content-between fw-semibold">
+            <span>Data saved successfully!</span>
+          </Toast.Body>
+        </Toast>
+      </ToastContainer>
     </>
   );
 }

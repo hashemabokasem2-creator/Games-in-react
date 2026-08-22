@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Home from "./pages/Home.jsx";
 import Mynavbar from "./components/Mynavbar.jsx";
 import Blay from "./pages/play.jsx";
@@ -46,6 +46,24 @@ function App() {
     document.body.style.backgroundAttachment = "fixed";
   }, [bgIndex, theme]);
 
+  const navigate = useNavigate();
+
+  const [savedData, setSavedData] = useState(() => {
+    const local = localStorage.getItem("gameData");
+    return local
+      ? JSON.parse(local)
+      : { name: "Guest", difficulty: "easy", goal: 10 };
+  });
+
+  const handleSaveData = (newData) => {
+    setSavedData(newData);
+    localStorage.setItem("gameData", JSON.stringify(newData));
+  };
+
+  const handleStartGame = () => {
+    navigate("/play", { state: savedData });
+  };
+
   return (
     <>
       <Mynavbar
@@ -53,6 +71,7 @@ function App() {
         setTheme={setTheme}
         accentColor={accentColor}
         setAccentColor={setAccentColor}
+        onStartGame={handleStartGame}
       />
       <Routes>
         <Route
@@ -63,10 +82,21 @@ function App() {
               accentColor={accentColor}
               handleNextBg={handleNextBg}
               handlePrevBg={handlePrevBg}
+              savedData={savedData}
+              onSaveData={handleSaveData}
             />
           }
         />
-        <Route path="/play" element={<Blay />} />
+        <Route
+          path="/play"
+          element={
+            <Blay
+              theme={theme}
+              accentColor={accentColor}
+              savedData={savedData}
+            />
+          }
+        />
         <Route path="/leaderboard" element={<Leaderboard />} />
       </Routes>
     </>
