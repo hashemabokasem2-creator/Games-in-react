@@ -40,24 +40,6 @@ function Blay({ theme, accentColor, savedData }) {
     return () => clearInterval(timer);
   }, [timeLeft]);
 
-  // useEffect(() => {
-  //   if (timeLeft <= 0) {
-  //     navigate("/leaderboard", {
-  //       state: {
-  //         playerData: savedData,
-  //         finalScore: score,
-  //       },
-  //     });
-  //     return;
-  //   }
-
-  //   const timer = setInterval(() => {
-  //     setTimeLeft((prev) => prev - 1);
-  //   }, 1000);
-
-  //   return () => clearInterval(timer);
-  // }, [timeLeft, navigate, savedData, score]);
-
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
